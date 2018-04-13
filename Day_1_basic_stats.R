@@ -157,6 +157,11 @@ chicks %>%
   group_by(Diet) %>% 
   summarise(mean_wt = mean(weight),
           median_wt = median(weight))
+central_chicks <- chicks %>% 
+  filter(Time == 21) %>% 
+  group_by(Diet) %>% 
+  summarise(mean_wt = mean(weight),
+            median_wt = median(weight))
 
 #Visualising the density of the data
 ggplot(data = filter(chicks, Time == 21 ),
@@ -174,6 +179,7 @@ ggplot(data = filter(chicks, Time == 21 ),
 #diet 4 = normally distributed
 
 #calculate the numeric value
+#load library for skewness
 library(e1071)
 
 chicks %>% 
@@ -183,5 +189,46 @@ chicks %>%
             median_wt = median(weight),
             skew_wt = skewness(weight))
 
-
+ggplot(data = filter(chicks, Time == 21 ),
+       aes(x= weight, fill = Diet))+
+  geom_density(alpha = 0.4)+
+  geom_vline(data = central_chicks)
           
+
+# Kurtosis ----------------------------------------------------------------
+
+#calculate the kurtosis of the tails of the distribution 
+chicks %>% 
+  filter(Time == 21) %>% 
+  group_by(Diet) %>% 
+  summarise(mean_wt = mean(weight),
+            median_wt = median(weight),
+            skew_wt = skewness(weight),
+            kurt_wt = kurtosis(weight))
+
+
+# Variance ----------------------------------------------------------------
+#std dev is the square root of the variance- its just weight
+# in write ups we generally give the mean +/- the std deviation
+
+#measures of variability
+
+#below is a summary of many different stats properties
+wt_summary <- chicks %>% 
+  filter(Time == 21) %>% 
+  group_by(Diet) %>% 
+  summarise(wt_mean = mean(weight),
+            wt_median = median(weight),
+            wt_var = var(weight),
+            wt_sd = sd(weight),
+            wt_min = min(weight),
+            wt_quartl = quantile(weight, 0.25),
+            wt_quart2 = quantile(weight, 0.5),
+            wt_quart3 = quantile(weight, 0.75))
+    
+
+#run for tibble of weight summary 
+wt_summary            
+
+
+

@@ -12,17 +12,18 @@ library(tidyverse)
 
 # Manual calculations -----------------------------------------------------
 
-#the mean
-#rnorm is used to generate a dataset of random normally distributed numbers
-#rpois is used to produced a dataset of random poisson distributed numbers
-#rbinom is used to produce a dataset of random binomialy distributed numbers
+# the mean
+# rnorm is used to generate a dataset of random normally distributed numbers
+# rpois is used to produced a dataset of random poisson distributed numbers
+# rbinom is used to produce a dataset of random binomialy distributed numbers
 
 r_dat <- data.frame(dat = rnorm(n = 600, mean = 372, sd = 50),
                     sample = "A")
                     
 
 
-#quick visualisation
+# quick visualisation
+
 ggplot(data = r_dat, aes(x = dat)) +
   geom_density()
 
@@ -30,30 +31,30 @@ ggplot(data = r_dat, aes(x = dat)) +
 # the mean ----------------------------------------------------------------
 
 
-#what is the mean?
-#sum of points 
-#divided by 
-#the number of points
+# what is the mean?
+# sum of points 
+# divided by 
+# the number of points
 
 r_dat %>% 
   summarise(r_sum = sum(dat),
             r_n = n(),
             r_mean = r_sum/r_n,
             r_mean_func = mean(dat))
-#refrain from using actaul numbers in these types of calculations
-#use the data, which even if updated will maintain the integrity of the code
-#we can double check the mean which was manually calculated
-#using the r_mean_func, pictured in the last line of code
+# refrain from using actaul numbers in these types of calculations
+# use the data, which even if updated will maintain the integrity of the code
+# we can double check the mean which was manually calculated
+# using the r_mean_func, pictured in the last line of code
 
 
 
 # the median --------------------------------------------------------------
-#find what the middle value is by using subsetting
-#this can be achieved using brute force using basic R
+# find what the middle value is by using subsetting
+# this can be achieved using brute force using basic R
 
 r_dat$dat[(length(r_dat$dat)+1)/2]
 
-#or manually using tidy
+# or manually using tidy
 
 r_dat %>% 
   arrange(dat) %>% 
@@ -118,7 +119,9 @@ sa_time <- read_csv("sa_time.csv")
 
 # adding the human column
 sa_time <- sa_time %>% 
-  mutate(human = seq(1, n(),1))
+  mutate(human = seq(1, n(),1),
+         geo = c(rep(c("Cape Town", "George", "PE"), times = 6),
+                     rep("Joburg", 2)))
 
 # edit our data
 sa_long <- sa_time %>% 
@@ -151,7 +154,7 @@ ggplot(data = sa_count, aes(x = "", y = prop, fill = time_type)) +
 
 # pie chart NB refrain from using this type of graph for representations
 
-(data = sa_count, aes(x = "", y = prop, fill = time_type)) +
+ggplot(data = sa_count, aes(x = "", y = prop, fill = time_type)) +
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
   labs(title = "Friends don't let...", subtitle = "...friends make pie charts",
@@ -174,7 +177,7 @@ ggplot(data = sa_long, aes(x = minutes))+
 # to avoid this from happening, we clean the data
 
 sa_clean <- sa_long %>% 
-  filter(minutes < 10000)
+  filter(minutes < 300)
 
 # run again with cleaned data
 
@@ -208,4 +211,32 @@ ggplot(data = sa_clean, aes(x = time_type, y = minutes)) +
 
 # Notched Boxplots
 ggplot(data = sa_clean, aes(x = time_type, y = minutes)) +
-  geom_boxplot(aes(fill=time_type), notch =TRUE)
+  geom_boxplot(aes(fill = time_type), notch =TRUE)
+
+# calculate summary stats for plotting over the boxplots
+sa_summary_stats <- sa_clean %>% 
+  group_by(time_type) %>% 
+  summarise(time_type_mean = mean(minutes))
+
+ggplot(data = sa_clean, aes(x = time_type, y = minutes)) +
+  geom_boxplot(aes(fill = time_type), notch = TRUE) +
+  geom_point(data = sa_summary_stats, size = 6, shape = 18,
+             aes(y = time_type_mean), colour = "goldenrod")
+
+#relationships
+
+# a basic scatterplot
+
+ggplot(data = sa_time, aes(y = now_now, x = just_now)) +
+         geom_point() +
+         coord_equal(xlim = c(0, 60), ylim = c(0, 60))
+
+# adding trendlines ~ geom_smooth function 
+
+ggplot(data = sa_time, aes(y = now_now, x = just_now)) +
+  geom_point(aes(colour = geo)) +
+  geom_smooth(aes(colour = geo), method = "lm") +
+  coord_equal(xlim = c(0, 60), ylim = c(0, 60))
+
+#grey areas denoted in the graph = standard error around the mean
+# the standard error can be removed by setting SE= FALSE
