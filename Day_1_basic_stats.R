@@ -13,7 +13,7 @@ library(tidyverse)
 # how to generate a sequence of integers
 # "by" represents the incriments 
 # "seq" refers to the sequence of values which will be created
-integer_r <- as.integer(seq(5, 14, by = 1 ))
+integer_r <- as.integer(seq(5, 14, by = 1))
 # run the object in the console to view the string of data
 
 
@@ -189,10 +189,12 @@ chicks %>%
             median_wt = median(weight),
             skew_wt = skewness(weight))
 
-ggplot(data = filter(chicks, Time == 21 ),
-       aes(x= weight, fill = Diet))+
+ggplot(data = filter(chicks, Time == 21),
+       aes(x = weight, fill = Diet))+
   geom_density(alpha = 0.4)+
-  geom_vline(data = central_chicks)
+  geom_vline(data = central_chicks, aes(xintercept = mean_wt, colour = Diet)) +
+  geom_vline(data = central_chicks, aes(xintercept = median_wt, colour = Diet),
+             linetype = "dashed")
           
 
 # Kurtosis ----------------------------------------------------------------
