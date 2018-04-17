@@ -69,7 +69,7 @@ shapiro.test(r_dat$dat)
 
 r_dat %>% 
   group_by(sample) %>% 
-  summarise(r_norm_dist =as.numeric(shapiro.test(dat)[2]))
+  summarise(r_norm_dist = as.numeric(shapiro.test(dat)[2]))
 
 # Remember the data are normal when p > 0.05
 # The data are non-normal when p >= 0.05
@@ -85,7 +85,7 @@ r_dat %>%
 
 # Check everything at once
 # WRONG
-var(r_dat)
+var(r_dat$dat)
 
 # Correct way - separate the data
 r_dat %>% 
@@ -201,21 +201,33 @@ ggplot(data = ecklonia_one, aes(x = variable, y = value, fill = site)) +
 
 # Developing the Hypothesis
  
-# H0: The primary blade length of kelp at Bastata Beach is not greater than Boulders Beach
-# H1: The primary blade length of kelp at BAstata Beach is greater than Boulders Beach
+# H0: The primary blade length of kelp at Batsata Beach is not greater than Boulders Beach
+# H1: The primary blade length of kelp at Batsata Beach is greater than Boulders Beach
 
 
-# CHoosing a test: Evaluating the data for homoscedastisity -------
+# Choosing a test: Evaluating the data for assumptions --------------------
 
 ecklonia_one %>% 
   group_by(site) %>% 
-  summarise(prim_blade_len_norm = as.numeric(shapiro.tesT(ecklonia_one$site)[2],
-            prim_blade_len_norm = two_assum(shapiro.test(ecklonia_one)[2])
+  summarise(prim_blade_len_norm = as.numeric(shapiro.test(value)[2]),
+            prim_blade_len_var = var(value))
             
 # TRIED USING THE CODE IN THE MANUAL TO PRODUCE TIBBLE FOR NORMALITY: DIS VS VAR
+  # Wonderful :)
 # FIRSTLY IT DIDNT RECOGNIZE THE TWO_ASSUM COMMMAND
+  # It didn't recognise this command because it is a function that we are making "by hand"
+  # In order for R to recognise it we must first run the code on our computer
+  # THis then creates the new function that we may use in our pipes etc.
 # I THEN TRIED TO REWRITE THE CODE BASED ON WHAT WE DID IN CLASS
+  # Very good
 # NOT UNDERSTANDING WHAT THE NUMBER FOLLOWING THE CODE VIZ. [1] OR [2]
+  # Square brackets are used to 'subset' data
+  # In this case, [1] takes the first value in a vector
+  # Therefore, [2] takes the second value
+  # shapiro.test() spits out two values
+  # Every value we want to create with summarise() may only be one value long
+  # So because shapiro.test() produces two values we have to pick only one
 # ALSO IN THE DAT PART OF THE CODE I USED THE $ TO DENOTE WHAT COLUMN NEEDS TO BE USED
+  # That's fine
 
   
