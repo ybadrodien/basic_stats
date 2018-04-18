@@ -44,6 +44,7 @@ descdist(y)
 
 library(tidyverse)
 library(plotly)
+library(ggpubr)
 
 # T-tests are used to compare the differences in the mean between 2 samples
 # ANOVA is used to compare the differences in the mean between 3 or more samples
@@ -230,4 +231,60 @@ ecklonia_one %>%
 # ALSO IN THE DAT PART OF THE CODE I USED THE $ TO DENOTE WHAT COLUMN NEEDS TO BE USED
   # That's fine
 
-  
+
+# Running the analysis ----------------------------------------------------
+
+t.test(value ~ site, data = ecklonia_one, var.equal = TRUE, alternative = "greater")  
+
+# DF output
+compare_means(value ~ site, data = ecklonia_one, var.equal = TRUE, alternative = "greater")
+
+
+# Interpreting results and drawing conclusions ----------------------------
+
+# t-Test results:
+
+# t = 0.71902, df = 24, p-value = 0.2395 
+
+# P > 0.05, therefore no significant difference
+
+# The primary blade length (cm) of the kelp Ecklonia maxima was found to be significantly greater at Batsata Rock than at Boulders Beach (p = 0.2395, t = 0.71902, df = 24)
+
+
+# Exercise 6.7.1 ----------------------------------------------------------
+
+# load data
+
+stud <- read_csv("stud.csv")
+
+# Visualizing data --------------------------------------------------------
+
+ggplot(data = stud, aes(x = sex, y = height)) +
+  geom_boxplot(aes(fill = sex))
+
+# Formulating a hypothesis
+# given the fact that the data is already cleaned and filtered, there is no need to filter
+
+# The hypothesis: Randomly made data
+
+# H0: Female height is less than male height.
+# H1: Female height is greater than male height.
+
+# Checking assumptions: Comparing the variance male height vs. female height
+
+stud %>% 
+  group_by(sex) %>% 
+  summarise(height_norm = as.numeric(shapiro.test(height)[2]),
+            height_var = var(height))
+
+
+# Running the analysis ----------------------------------------------------
+
+t.test(height ~ sex, data = stud, var.equal = TRUE, alternative = "greater")
+
+
+# Conclusion --------------------------------------------------------------
+
+Female height is less than male height (p = 1, t = -5.1079, df = 28)
+
+
