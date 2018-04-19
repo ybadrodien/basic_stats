@@ -173,7 +173,9 @@ ggplot(data = chicks_mean, aes( x = Time, y = weight_mean, colour = Diet)) +
 # we dont have normal data?
 
 # for a t-Test we rather use a wilcox rank sum test
-wilcox.test(weight ~ Diet, data = chicks_0_21) 
+
+wilcox.test(weight ~ Diet, data = filter(chicks_0_21, Diet %in% c(1,3))) 
+
 # and then one fills this in same as we do for  t-test, apparently- but it didnt work :\
 
 # and now for the Kruskall-Wallis
