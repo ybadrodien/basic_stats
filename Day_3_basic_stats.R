@@ -255,6 +255,31 @@ compare_means(value ~ site, data = ecklonia_one, var.equal = TRUE, alternative =
 
 # load data
 
+cab <- read_csv("cab.csv")  
+  
+ggplot(data = cab, aes(x = as.factor(year), y = patrons)) +
+  geom_boxplot(aes(colour = direction, fill = direction))
+
+
+# Formulating a  hypothesis -----------------------------------------------
+
+# H0: 2014 had less number of visitors than 2015
+# H1: 2014 has a greater number of visitors than 2015
+
+
+# Checking the assumptions: Comparing distribution and variance no --------
+
+cab %>% 
+  group_by(year) %>% 
+  summarise(patrons_norm = as.numeric(shapiro.test(patrons)[2]),
+            patrons_var = var(patrons))
+
+
+# Running the analysis ----------------------------------------------------
+
+t.test(patrons ~ patrons, data = cab, var.equal = TRUE, alternative = "greater")
+t.test(value ~ site, data = ecklonia_sub, var.equal = TRUE, alternative = "greater")     
+
 stud <- read_csv("stud.csv")
 
 # Visualizing data --------------------------------------------------------
