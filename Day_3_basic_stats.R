@@ -294,6 +294,10 @@ ggplot(data = stud, aes(x = sex, y = height)) +
 
 # H0: Female height is less than male height.
 # H1: Female height is greater than male height.
+# RWS: The alternative hypothesis is not the opposite of the null hypothesis
+# Rather it is a refutation of it:
+# H0: Female height is not greater than male height.
+# H1: Female height is greater than male height.
 
 # Checking assumptions: Comparing the variance male height vs. female height
 
@@ -310,6 +314,7 @@ t.test(height ~ sex, data = stud, var.equal = TRUE, alternative = "greater")
 
 # Conclusion --------------------------------------------------------------
 
-Female height is less than male height (p = 1, t = -5.1079, df = 28)
-
+# Female height is less than male height (p = 1, t = -5.1079, df = 28)
+# RWS: You tested if female height was greater than male height:
+# Female height is not greater than male height (p = 1, t = -5.1079, df = 28)
 
