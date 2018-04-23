@@ -3,7 +3,7 @@
 # 20 April 2018
 
 
-Exercises: Snakes
+# Exercises: Snakes
 
 # loading the dataset
 
@@ -24,11 +24,11 @@ snakes_summary <-  snakes %>%
 
 
 # Test a hypothesis -------------------------------------------------------
-library(Rmisc)
+# library(Rmisc) # Unfortunately this overrides many dplyr functions
 
 # first calculate SE and CI 
 
-snakes.summary2 <-  summarySE(data = snakes,
+snakes.summary2 <-  Rmisc::summarySE(data = snakes,
                               measurevar = "openings",
                               groupvar = c("day"))
 
@@ -93,11 +93,11 @@ moth_trap_summary <-  moth %>%
             moth_sd = sd(count))
 
 # Calculating SE and CI for Location and Trap
-moth_loc_summary_2 <- summarySE(data = moth, 
+moth_loc_summary_2 <- Rmisc::summarySE(data = moth, 
                                 measurevar = "count",
                                 groupvars = c("Location"))
 
-moth_trap_summary_2 <- summarySE(data = moth, 
+moth_trap_summary_2 <- Rmisc::summarySE(data = moth, 
                                 measurevar = "count",
                                 groupvars = c("trap"))
 
@@ -135,7 +135,7 @@ Final <- ggarrange(location, trap,
 # Run the final plot
 
 Final
-  
+# RWS: Very nice!
 
 # Linear Regression -------------------------------------------------------
 
@@ -212,7 +212,7 @@ cor.test(ecklonia$primary_blade_length, ecklonia$stipe_mass)
 # visualise the data 
 ggplot(data = ecklonia, aes(primary_blade_length, y = stipe_mass)) +
   geom_point() +
-  geom_smooth(method = "lm", SE= T)
+  geom_smooth(method = "lm", se= T)
 
 # run hecka tests at once: Provides a comparative table between variables
 
@@ -239,10 +239,4 @@ cor.test(ecklonia$primary_blade_length, ecklonia$primary_blade_width, method = "
 
 ecklonia_pearson <-  cor(ecklonia_sub)
 corrplot(ecklonia_cor, method = "circle")
-
-
-
-
-
-
 
