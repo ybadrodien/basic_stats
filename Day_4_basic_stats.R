@@ -64,7 +64,7 @@ summary(chicks.aov1)
 
 # Visualising the data to identify diff: Notched boxplots
 
-ggplot(data = chicks_21, aes(x = Diet, y = weight)) +
+ggplot(data = chicks_21, aes(x = as.factor(Time), y = weight)) +
   geom_boxplot(aes(fill = Diet), notch = TRUE)
 
 # We look at the notches of the plots, if the notches overlap, there means between
