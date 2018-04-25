@@ -253,11 +253,46 @@ ggplot(melted_weeds, aes(x = Var1, y = Var2, fill = value)) +
                                    size = 12, hjust = 1)) +
   labs(x = "Variable 1", y = "Variable 2")
 
+# Exercise 1
+
+# enter the mass at the end of the experiment
+
+feed_1 <- c(60.8, 57.0, 65.0, 58.6, 61.7)
+feed_2 <- c(68.7, 67.7, 74.0, 66.3, 69.8)
+feed_3 <- c(102.6, 102.1, 100.2, 96.5)
+feed_4 <- c(87.9, 84.2, 83.1, 85.7, 90.3)
+
+#making the dataframe
+chitlins <- as.tibble(data.frame(
+  feed = c(
+    rep("Feed 1", length(feed_1)),
+    rep("Feed 2", length(feed_2)),
+    rep("Feed 3", length(feed_3)),
+    rep("Feed 4", length(feed_4))),
+  mass = c(feed_1, feed_2, feed_3, feed_4)))
+
+#Running the anova
+
+chits.aov1 <- aov(mass ~ feed, data = chitlins)
+
+# summarising the resulta of the ANOVA
+
+summary(chits.aov1)
 
 
+# Exercise 2: Developing a hypothesis
+
+# h0: There is no difference in tooth length with regard to supplement application
+# h1: There is a difference in tooth length with regard to supplement application
 
 
+# Assigning the df to a vector
 
+teeth <- ToothGrowth
 
-=======
->>>>>>> f976551266f9cf303f6b1d6365c6b763acd03cd1
+# Running the ANOVA
+teeth.aov <- aov(len ~ supp, data = teeth)
+
+# Summarising the ANOVA results
+summary(teeth.aov)
+
