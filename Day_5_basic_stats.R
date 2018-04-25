@@ -240,6 +240,18 @@ cor.test(ecklonia$primary_blade_length, ecklonia$primary_blade_width, method = "
 ecklonia_pearson <-  cor(ecklonia_sub)
 corrplot(ecklonia_cor, method = "circle")
 
+# Heat map
+# Load Library 
+library(reshape2)
+
+melted_weeds <- melt(ecklonia_pearson)
+ggplot(melted_weeds, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1,
+                                   size = 12, hjust = 1)) +
+  labs(x = "Variable 1", y = "Variable 2")
+
 
 
 
